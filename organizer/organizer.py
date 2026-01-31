@@ -4,16 +4,14 @@ from typing import Dict, List
 
 def plan_organization(directory: Path) -> Dict[Path, Path]:
     """
-
     Given a directory, return a mapping of source file paths to destination paths.
     No filesystem changes are made.
-
-    files = all_files_in_the_directory
-    for path in files:
-    Dict[path,file_filter(path)path]
-    :return Dict:
     """
-    ...
+    organized_dict = {}
+    for file_path in directory.iterdir():
+        organized_dict[file_path] = Path(str(directory) + "/" + file_filter(file_path) +
+                                         "/" + file_path.name)
+    return organized_dict
 
 
 def file_filter(file_path: Path) -> str:
