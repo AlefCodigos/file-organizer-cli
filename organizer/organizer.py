@@ -18,6 +18,23 @@ def file_filter(file_path: Path) -> str:
     return "others"
 
 
+def get_unique_path(path: Path) -> Path:
+    if not path.exists():
+        return path
+
+    stem = path.stem
+    suffix = path.suffix
+    parent = path.parent
+
+    counter = 1
+
+    while True:
+        new_path = parent / f"{stem} ({counter}){suffix}"
+        if not new_path.exists():
+            return new_path
+        counter += 1
+
+
 def plan_organization(directory: Path) -> Dict[Path, Path]:
     """
     Given a directory, return a mapping of source file paths to destination paths.
@@ -38,8 +55,9 @@ def apply_organization(directory: Path) -> str:
         if source.is_file():
             destination.parent.mkdir(parents=True, exist_ok=True)
             try:
-                shutil.move(source, destination)
-                operation_log = operation_log + f"Moved {source.name} from {directory} to {destination}\n"
+                final_destination = get_unique_path(destination)
+                shutil.move(source, final_destination)
+                operation_log = operation_log + f"Moved {source.name} from {directory} to {final_destination}\n"
             except shutil.Error as e:
                 operation_log = operation_log + f"Error moving {source.name}: {e}\n"
     return operation_log

@@ -4,7 +4,8 @@ from pathlib import Path
 from tempfile import NamedTemporaryFile, TemporaryDirectory
 from organizer.organizer import (
     plan_organization,
-    file_filter
+    file_filter,
+    get_unique_path
 )
 
 
@@ -34,3 +35,15 @@ def test_file_filter():
     assert file_filter(Path("test.cbz")) == "others"
     return
 
+
+def test_get_unique_path():
+    with (
+        TemporaryDirectory() as d,
+        tempfile.NamedTemporaryFile(dir=d, suffix=".txt") as document,
+        tempfile.NamedTemporaryFile(dir=d, suffix=".png") as image,
+        tempfile.NamedTemporaryFile(dir=d, suffix=".jpg") as image2
+    ):
+
+        assert get_unique_path(Path(document.name)) == Path(document.name).parent / f"{Path(document.name).stem} (1).txt"
+        assert get_unique_path(Path(image.name)) == Path(image.name).parent / f"{Path(image.name).stem} (1).png"
+        assert get_unique_path(Path(image2.name)) == Path(image2.name).parent / f"{Path(image2.name).stem} (1).jpg"
