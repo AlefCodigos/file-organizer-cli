@@ -19,10 +19,10 @@ On the organizer folder, run:
 python organizer.py -h
 ```
 
-example:
+Example:
 
 ```bash
-python organizer.py --dry-run ./downloads
+python organizer.py -d ./downloads
 ```
 
 ## Testing
