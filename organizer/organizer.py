@@ -8,10 +8,12 @@ def file_filter(file_path: Path) -> str:
     file_extension = file_path.suffix.lower()
     if file_extension in {".png", ".jpg", ".jpeg", ".gif", ".webp"}:
         return "images"
-    if file_extension in {".mp4", ".avi", ".mkv"}:
+    if file_extension in {".mp4", ".avi", ".mkv", ".rmvb"}:
         return "videos"
-    if file_extension in {".pdf", ".txt", ".md"}:
+    if file_extension in {".pdf", ".txt", ".md", ".docx"}:
         return "documents"
+    if file_extension in {".mp3", ".flac", ".ape"}:
+        return "audio"
     if file_extension in {".zip", ".rar", ".7z"}:
         return "archives"
 
